@@ -9,6 +9,8 @@
   --lampink: #303c61;
   --haze: #e9eef3;
   --brand: #303c61;
+  --title: #27313c;
+  --sky: linear-gradient(180deg, #6d789a 0%, #aeb0ba 55%, var(--line) 100%);
   --line: #ddd7cd;
   --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -138,7 +140,7 @@ nav a:not(.brand):hover{
 
 /* Home page hero */
 .hero{
-  background: linear-gradient(180deg, var(--soft), var(--line));
+  background: var(--sky);
   padding: 6rem 0 4.5rem;
 }
 
@@ -266,7 +268,7 @@ section.story .wrap,
   position: relative;
   overflow: hidden;
   padding: 6rem 0 2rem;
-  background: linear-gradient(180deg, var(--soft), var(--line));
+  background: var(--sky);
 }
 
 .pagehead .wrap{
@@ -947,4 +949,27 @@ section.closing{
   .brand span{
     font-size: 1.125rem;
   }
+}
+
+/* Buy buttons: e-book shop first, Amazon as a quiet alternative */
+.buyrow{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 1.25rem;
+}
+
+.cta .buyrow{
+  justify-content: center;
+}
+
+@media (max-width:760px){
+  .hero .buyrow{
+    justify-content: center;
+  }
+}
+
+/* Big titles keep the original dark slate */
+h1{
+  color: var(--title);
 }
