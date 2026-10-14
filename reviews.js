@@ -1,21 +1,29 @@
 // To add a review, copy the line inside the list below, remove the // at the start, and edit the text and name.
+// "stars" is optional (1 to 5). Once the list has at least one review, the example cards on the page are replaced.
 const REVIEWS = [
-  // { text: "Your review text here.", name: "Reader name" },
+  // { text: "Your review text here.", name: "Reader name", stars: 5 },
 ];
 
 const box = document.getElementById("reviews");
-if (box) {
-  if (REVIEWS.length === 0) {
-    const p = document.createElement("p");
-    p.textContent = "No reviews on the site yet. Be the first to share what you thought.";
-    box.appendChild(p);
-  }
+if (box && REVIEWS.length > 0) {
+  box.textContent = "";
   REVIEWS.forEach(function (r) {
+    const f = document.createElement("figure");
+    f.className = "review";
+    if (r.stars) {
+      const s = document.createElement("div");
+      s.className = "stars";
+      s.setAttribute("role", "img");
+      s.setAttribute("aria-label", r.stars + " out of 5 stars");
+      s.textContent = "★".repeat(r.stars);
+      f.appendChild(s);
+    }
     const b = document.createElement("blockquote");
-    b.appendChild(document.createTextNode(r.text));
-    const c = document.createElement("cite");
+    b.textContent = r.text;
+    f.appendChild(b);
+    const c = document.createElement("figcaption");
     c.textContent = r.name;
-    b.appendChild(c);
-    box.appendChild(b);
+    f.appendChild(c);
+    box.appendChild(f);
   });
 }
