@@ -35,6 +35,9 @@ body{
   font: 400 1.0625rem/1.65 var(--sans);
   letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 /* Links */
@@ -386,5 +389,97 @@ footer p{
 @supports not (view-transition-name:none){
   body{
     animation: page-in .4s ease-out;
+  }
+}
+
+/* Keep the footer at the bottom of short pages */
+main{
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+main > section:last-child{
+  flex: 1 0 auto;
+}
+
+/* Essay cards */
+section.story .wrap.wide{
+  max-width: 62rem;
+}
+
+.cards{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 0 0 2.5rem;
+}
+
+a.card,
+a.card:visited,
+a.card:hover{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 18rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(180deg, rgba(20, 27, 36, 0) 35%, rgba(20, 27, 36, .85) 100%), var(--card-bg);
+  background-size: cover;
+  background-position: center;
+  transition: transform .3s ease-out, box-shadow .3s ease-out;
+}
+
+a.card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -16px rgba(29, 39, 51, .55);
+}
+
+.card-meta{
+  display: block;
+  margin-bottom: .35rem;
+  font-size: .8rem;
+  opacity: .85;
+}
+
+.card-title{
+  margin: 0 0 .75rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+}
+
+.card-tags{
+  display: block;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--lamp);
+}
+
+@media (max-width:760px){
+  .cards{
+    grid-template-columns: 1fr;
+  }
+
+  a.card,
+  a.card:visited,
+  a.card:hover{
+    min-height: 14rem;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  a.card,
+  a.card:hover{
+    transition: none;
+    transform: none;
   }
 }
