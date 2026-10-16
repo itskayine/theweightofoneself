@@ -1057,3 +1057,38 @@ body > footer{
     animation: none;
   }
 }
+
+
+
+
+dialog.sale-dialog{
+  width: calc(100% - 3rem);
+  max-width: 28rem;
+  padding: 2rem;
+  border: 0;
+  border-radius: 12px;
+  background: var(--line);
+  color: var(--ink);
+  text-align: center;
+  box-shadow: 0 30px 60px -20px rgba(29, 39, 51, .5);
+}
+ 
+dialog.sale-dialog::backdrop{
+  background: #ddd7cd;
+  opacity: 0.55;
+}
+ 
+dialog.sale-dialog h2{
+  margin: 0 0 .75rem;
+  font-size: 1.75rem;
+}
+ 
+dialog.sale-dialog p{
+  margin: 0 0 1.5rem;
+}
+ 
+dialog.sale-dialog .buy{
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
