@@ -1,8 +1,9 @@
-// Pop-up shown when someone clicks a "Not available yet" button.
-// The pop-up brings its own styles, so it looks right even if style.css is old or cached.
+// Pop-up shown when someone clicks a "Notify me when it’s live" button.
+// It sends people to your Substack to leave their email, and brings its own styles.
 (function () {
-  var TITLE = "Not available yet";
-  var MESSAGE = "The e-book is not available for purchase at the moment. Thank you for your interest.";
+  var TITLE = "Get notified when it’s live";
+  var MESSAGE = "The e-book isn’t on sale yet. Subscribe to my Substack with your email and you’ll hear from me as soon as it is. You’ll also receive my new essays.";
+  var SUBSTACK = "https://kayine.substack.com";
   var FADE_MS = 250;
 
   var css = `
@@ -51,17 +52,39 @@ dialog.sale-dialog p{
   line-height: 1.6;
 }
 
+dialog.sale-dialog .sale-actions{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+}
+
+dialog.sale-dialog .sale-cta,
+dialog.sale-dialog .sale-cta:visited,
+dialog.sale-dialog .sale-cta:hover,
 dialog.sale-dialog .sale-close{
+  display: inline-block;
+  box-sizing: border-box;
   padding: .5rem 1.25rem;
-  border: 0;
+  border: 2px solid var(--brand, #27313c);
   border-radius: 20px;
   background: var(--brand, #27313c);
   color: #fff;
   font: inherit;
   font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
   cursor: pointer;
 }
 
+dialog.sale-dialog .sale-close{
+  background: transparent;
+  color: var(--ink, #27313c);
+  border-color: var(--ink, #27313c);
+}
+
+dialog.sale-dialog .sale-cta:focus-visible,
 dialog.sale-dialog .sale-close:focus-visible{
   outline: 3px solid var(--ink, #27313c);
   outline-offset: 3px;
@@ -85,12 +108,15 @@ dialog.sale-dialog .sale-close:focus-visible{
   dialog.innerHTML =
     '<h2 id="sale-title">' + TITLE + "</h2>" +
     "<p>" + MESSAGE + "</p>" +
-    '<button type="button" class="sale-close">Close</button>';
+    '<div class="sale-actions">' +
+    '<a class="sale-cta" href="' + SUBSTACK + '/subscribe" target="_blank" rel="noopener">Subscribe on Substack</a>' +
+    '<button type="button" class="sale-close">Close</button>' +
+    "</div>";
   document.body.appendChild(dialog);
 
   function openDialog() {
     if (typeof dialog.showModal !== "function") {
-      window.alert(MESSAGE);
+      window.open(SUBSTACK + "/subscribe", "_blank", "noopener");
       return;
     }
     dialog.showModal();

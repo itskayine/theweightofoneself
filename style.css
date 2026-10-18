@@ -1092,3 +1092,33 @@ dialog.sale-dialog .buy{
   font: inherit;
   cursor: pointer;
 }
+
+.review figcaption{
+  line-height: 1.4;
+}
+ 
+.review figcaption .reviewer-name{
+  display: block;
+}
+ 
+.review figcaption .reviewer-role{
+  display: block;
+  margin-top: .15rem;
+  font-size: .875rem;
+  font-weight: 400;
+}
+
+section.story .reviews{
+  display: block;
+  columns: 20rem 2;
+  column-gap: 1.25rem;
+}
+
+section.story .reviews .review{
+  width: auto;
+  max-width: none;
+  margin: 0 0 1.25rem;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+}
