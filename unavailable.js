@@ -1,18 +1,23 @@
 // Pop-up shown when someone clicks a "Notify me when it’s live" button.
-// It sends people to your Substack to leave their email, and brings its own styles.
+// It shows the Brevo email signup form and brings its own styles.
 (function () {
   var TITLE = "Get notified when it’s live";
-  var MESSAGE = "The e-book isn’t on sale yet. Subscribe to my Substack with your email and you’ll hear from me as soon as it is. You’ll also receive my new essays.";
-  var SUBSTACK = "https://kayine.substack.com";
+  var MESSAGE = "The e-book is launching soon. Leave your email and you’ll be the first to know when it’s out.";
+
+  // Brevo signup form. It only loads the first time the pop-up opens,
+  // so visitors who never click don’t load anything from Brevo.
+  var FORM_URL = "https://50f0f619.sibforms.com/v2/serve/MUIFAM9LFLyf9YdY6ShQHi297KiZgC2mukTtVShe5dsNX-pgj6TvIeMClEutMJZJgnE8d9HUlqzHOGqg6ck7S7A-TDO4GkjnYI4NaPRCdkO6DRBSJp_pOpK1OUPFeX_AFKlcdBdpa7ujqPdGnvqR_xwbtGmCRLJTY5ri4UG3zcM8mPHPd0wyIZR3eP7mCHoromWR1uz4j1SGKf-0Hw==";
+
   var FADE_MS = 250;
 
   var css = `
 dialog.sale-dialog{
   box-sizing: border-box;
-  width: calc(100% - 3rem);
-  max-width: 28rem;
+  width: calc(100% - 2rem);
+  max-width: 34rem;
+  max-height: calc(100% - 2rem);
   margin: auto;
-  padding: 2rem;
+  padding: 1.75rem 1.5rem 1.5rem;
   border: 0;
   border-radius: 12px;
   background: var(--line, #ddd7cd);
@@ -48,8 +53,17 @@ dialog.sale-dialog h2{
 }
 
 dialog.sale-dialog p{
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.25rem;
   line-height: 1.6;
+}
+
+dialog.sale-dialog iframe.sale-form{
+  display: block;
+  width: 100%;
+  height: 22rem;
+  margin: 0 auto 1rem;
+  border: 0;
+  border-radius: 8px;
 }
 
 dialog.sale-dialog .sale-actions{
@@ -60,31 +74,20 @@ dialog.sale-dialog .sale-actions{
   gap: .75rem;
 }
 
-dialog.sale-dialog .sale-cta,
-dialog.sale-dialog .sale-cta:visited,
-dialog.sale-dialog .sale-cta:hover,
 dialog.sale-dialog .sale-close{
   display: inline-block;
   box-sizing: border-box;
   padding: .5rem 1.25rem;
-  border: 2px solid var(--brand, #27313c);
+  border: 2px solid var(--ink, #27313c);
   border-radius: 20px;
-  background: var(--brand, #27313c);
-  color: #fff;
+  background: transparent;
+  color: var(--ink, #27313c);
   font: inherit;
   font-weight: 600;
   line-height: 1.4;
-  text-decoration: none;
   cursor: pointer;
 }
 
-dialog.sale-dialog .sale-close{
-  background: transparent;
-  color: var(--ink, #27313c);
-  border-color: var(--ink, #27313c);
-}
-
-dialog.sale-dialog .sale-cta:focus-visible,
 dialog.sale-dialog .sale-close:focus-visible{
   outline: 3px solid var(--ink, #27313c);
   outline-offset: 3px;
@@ -108,15 +111,34 @@ dialog.sale-dialog .sale-close:focus-visible{
   dialog.innerHTML =
     '<h2 id="sale-title">' + TITLE + "</h2>" +
     "<p>" + MESSAGE + "</p>" +
+    '<iframe class="sale-form" title="Email signup form" scrolling="auto"></iframe>' +
     '<div class="sale-actions">' +
-    '<a class="sale-cta" href="' + SUBSTACK + '/subscribe" target="_blank" rel="noopener">Subscribe on Substack</a>' +
     '<button type="button" class="sale-close">Close</button>' +
     "</div>";
   document.body.appendChild(dialog);
 
+  var frame = dialog.querySelector("iframe.sale-form");
+
+  // Counts the click in GoatCounter (if it has loaded).
+  function track(name) {
+    try {
+      if (window.goatcounter && typeof window.goatcounter.count === "function") {
+        window.goatcounter.count({
+          path: name + "-" + (location.pathname.split("/").pop() || "index"),
+          title: name,
+          event: true
+        });
+      }
+    } catch (e) {}
+  }
+
   function openDialog() {
+    track("notify-click");
+    if (!frame.getAttribute("src")) {
+      frame.setAttribute("src", FORM_URL);
+    }
     if (typeof dialog.showModal !== "function") {
-      window.open(SUBSTACK + "/subscribe", "_blank", "noopener");
+      window.open(FORM_URL, "_blank", "noopener");
       return;
     }
     dialog.showModal();
